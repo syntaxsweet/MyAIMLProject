@@ -1,9 +1,12 @@
-# core/stt.py
+import openai
+import os
+from dotenv import load_dotenv
 
-import whisper
+load_dotenv()
 
-model = whisper.load_model("base")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def transcribe_audio(file_path):
-    result = model.transcribe(file_path)
-    return result["text"]
+def transcribe_audio(audio_file_path):
+    audio_file = open(audio_file_path, "rb")
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    return transcript["text"]
